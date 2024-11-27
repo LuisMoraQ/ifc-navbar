@@ -1,1 +1,68 @@
 <div #container style="height: 100vh; width: 100%;"></div>
+<div class="container-tabla" *ngIf="mostrarNavbar">
+    <div class="col-12 header-nav text-center" >
+        <h4 class="color-h4">Datos Documento</h4>
+    </div>
+    <div class="col-12 h-tablas-container">
+        <div class="col-12 b-containers h-50 overflow-auto">
+            <ng-container *ngIf="dataIFC.length">
+                <table class="table-responsive table-bordered w-100" style="table-layout: fixed;">
+                    <thead class="head-sticky text-center">
+                        <tr>
+                            <th class="propertiesPanel" [style.width.px]="40">ACTIVO</th>
+                            <th class="propertiesPanel" [style.width.px]="200">TIPO</th>
+                            <th class="propertiesPanel" [style.min-width.px]="250">ELEMENTO</th>
+                            <!-- <th class="propertiesPanel" [style.width.px]="60">DESCRIPC.</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="dataIFC.length">
+                            <ng-container *ngFor="let row of dataIFC; let i = index">
+                                <tr *ngIf="row.mostrar" (click)="seleccionRow(row,i)">
+                                    <td class="text-center" [ngClass]="{'highlight-row': this.filaSel == i }">
+                                        <input class="form-check-input" type="checkbox" value="row.active">
+                                    </td>
+                                    <td class="text-center" [ngClass]="{'highlight-row': this.filaSel == i }">
+                                        <div class="d-flex align-content-center" [ngStyle]="{'margin-left':  (row.nivel * 10)  + 'px'}">
+                                            <!-- <button class="btn btn-secondary btn-mini ">  -->
+                                            <i class="fa fa-minus btn-cst align-content-center" *ngIf="!row.active" (click)="toggleRow(i, false)"></i>
+                                            <i class="fa fa-plus btn-cst align-content-center" *ngIf="row.active" (click)="toggleRow(i, true)"></i>
+                                            <!-- </button> -->
+                                            <span class="badge rounded-pill text-bg-secondary ms-1"
+                                                *ngIf="row.claseTraducida == 'Piso de Edificio'; else otro">{{row.claseTraducida}}</span>
+                                            <ng-template #otro>
+                                                <!-- <div *ngIf="row.nivel == null || row.nivel > 4 ; else mstrar">
+
+                                                </div>
+                                                <ng-template #mstrar> -->
+                                                    <div class="ms-1" [ngStyle]="{'text-decoration': row.nivel == 4 ? 'underline': ''}">
+                                                        {{row.claseTraducida}}
+                                                    </div>
+
+                                                <!-- </ng-template> -->
+
+                                            </ng-template>
+                                        </div>
+
+                                    </td>
+                                    <td [ngClass]="{'highlight-row': this.filaSel == i }">{{row.informacion?.Name?.value}}</td>
+                                    <!-- <td class="text-center" >-</td> -->
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+
+                    </tbody>
+                </table>
+            </ng-container>
+        </div>
+        <div class="col-12 b-containers h-50 overflow-auto"></div>
+    </div>
+
+</div>
+<button (click)="toggleNavbar()" [title]="mostrarNavbar ? 'Ocultar Datos': 'Mostrar Datos'" container="body"
+    class="btn btn-primary btn-sm btn-custom-togle"
+    [ngClass]="{'togle-btn-1': !mostrarNavbar, 'togle-btn-2': mostrarNavbar}">
+
+    <i class="fas fa-arrow-left" aria-hidden="true" *ngIf="mostrarNavbar"></i>
+    <i class="fas fa-arrow-right" aria-hidden="true" *ngIf="!mostrarNavbar"></i>
+</button>
